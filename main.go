@@ -1,8 +1,6 @@
 package main
 
 import (
-	// "time"
-
 	"energytoken/controllers"
 	"energytoken/middlewares"
 	"energytoken/models"
@@ -34,15 +32,6 @@ func main() {
 	protectedUsers := r.Group("/api/user", CORSMiddleware())
 	protectedUsers.Use(middlewares.JWTAuthMiddleware())
 
-	protectedUsers.OPTIONS("/porposeresidential", CORSMiddleware())
-	protectedUsers.POST("/porposeresidential", controllers.ResidentialProposal)
-
-	protectedUsers.OPTIONS("/acceptporposal", CORSMiddleware())
-	protectedUsers.POST("/acceptporposal", controllers.AcceptProposal)
-
-	protectedUsers.OPTIONS("/rejectporposal", CORSMiddleware())
-	protectedUsers.POST("/rejectporposal", controllers.RejectProposal)
-
 	protectedUsers.OPTIONS("/transfer", CORSMiddleware())
 	protectedUsers.POST("/transfer", controllers.Transfer)
 
@@ -50,9 +39,6 @@ func main() {
 	protectedUsers.GET("/balance", controllers.Balance)
 
 	// should be admin
-	protectedUsers.OPTIONS("/getallproposals", CORSMiddleware())
-	protectedUsers.GET("/getallproposals", controllers.GetAllResidentialProposal)
-
 	protected := r.Group("/api/admin")
 	protected.Use(middlewares.JWTAuthMiddleware())
 	protected.POST("/user", controllers.CurrentUser)

@@ -11,7 +11,7 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
-func GenerateToken(user_id uint, NationalId string, walletID string, is_super bool) (string, error) {
+func GenerateToken(user_id uint, Email string, walletID string, is_super bool) (string, error) {
 
 	token_lifespan, err := strconv.Atoi(os.Getenv("TOKEN_HOUR_LIFESPAN"))
 	if err != nil {
@@ -21,7 +21,7 @@ func GenerateToken(user_id uint, NationalId string, walletID string, is_super bo
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
 	claims["user_id"] = user_id
-	claims["national_id"] = NationalId
+	claims["email"] = Email
 	claims["wallet_id"] = walletID
 	claims["is_super"] = is_super
 	claims["exp"] = time.Now().Add(time.Hour * time.Duration(token_lifespan)).Unix()

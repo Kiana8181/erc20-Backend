@@ -26,36 +26,6 @@ func CurrentUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "success", "data": u})
 }
 
-type VeneshGenerateTokenReq struct {
-	Username      string `json:"username"`
-	Password      string `json:"password"`
-	Grant_type    string `json:"grant_type"`
-	Client_id     string `json:"client_id"`
-	Client_secret string `json:"client_secret"`
-}
-
-type VeneshGenerateTokenRes struct {
-	Token_type    string `json:"token_type"`
-	Expires_in    int    `json:"expires_in"`
-	Access_token  string `json:"access_token"`
-	Refresh_token string `json:"refresh_token"`
-}
-
-type ValidatePhoneNumberInput struct {
-	PhoneNumber string `json:"phoneNumber" binding:"required"`
-	NationalId  string `json:"nationalId" binding:"required"`
-}
-
-type ShahkarReq struct {
-	NationalId string `json:"NationalId"`
-	Mobile     string `json:"Mobile"`
-}
-
-type ShahkarRes struct {
-	Status  int    `json:"Status"`
-	Message string `json:"Message"`
-}
-
 type RegisterInput struct {
 	NationalId  string `json:"nationalId" binding:"required"`
 	PhoneNumber string `json:"phoneNumber" binding:"required"`
