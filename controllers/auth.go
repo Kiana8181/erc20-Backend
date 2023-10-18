@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"energytoken/blockchain"
-	"energytoken/kavenegar"
 	"energytoken/models"
 	cacheService "energytoken/redis"
 	"energytoken/utils/token"
@@ -130,14 +129,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	//Generate OTP Token
-	otpCode, err := kavenegar.GenerateOTP(u.Username)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err})
-		return
-	}
-
-	err = cacheService.LoginTokenInsert(u.Username, otpCode, token)
+	err = cacheService.LoginTokenInsert(u.Username, token)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "an error occurred during authentication process."})
 		return

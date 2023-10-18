@@ -13,14 +13,14 @@ import (
 
 var ctx = context.Background()
 
-func LoginTokenInsert(phoneNumber string, token string, otpCode string) error {
+func LoginTokenInsert(phoneNumber string, token string) error {
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     os.Getenv("REDIS_ADDRESS"),
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})
 
-	input := token + "/(+)/" + otpCode
+	input := token
 
 	key := phoneNumber
 	hashKey := sha256.New()
