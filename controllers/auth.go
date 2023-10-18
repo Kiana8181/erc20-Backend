@@ -27,7 +27,7 @@ func CurrentUser(c *gin.Context) {
 }
 
 type RegisterInput struct {
-	NationalId  string `json:"nationalId" binding:"required"`
+	Email  string `json:"email" binding:"required"`
 	PhoneNumber string `json:"phoneNumber" binding:"required"`
 	Password    string `json:"password" binding:"required"`
 }
@@ -49,7 +49,7 @@ func Register(c *gin.Context) {
 
 	u := models.User{}
 
-	u.NationalId = input.NationalId
+	u.Email = input.Email
 	u.Username = input.PhoneNumber
 	u.Password = input.Password
 	u.IsSuper = false
