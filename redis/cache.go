@@ -13,30 +13,6 @@ import (
 
 var ctx = context.Background()
 
-func RegisterCacheCheck(phoneNumber string, nationalId string) error {
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     os.Getenv("REDIS_ADDRESS"),
-		Password: "", // no password set
-		DB:       0,  // use default DB
-	})
-
-	key := phoneNumber + nationalId
-	hashKey := sha256.New()
-	hashKey.Write([]byte(key))
-	hashKeyStr := string(hashKey.Sum(nil))
-
-	raw_PhoneID, _ := rdb.Get(ctx, hashKeyStr).Result()
-	credentials := strings.Split(raw_PhoneID, "/(+)/")
-
-	if credentials[0] != phoneNumber {
-		return errors.New("phone number mismached")
-	}
-	if credentials[1] != nationalId {
-		return errors.New("national id mismached")
-	}
-	return nil
-}
-
 func LoginTokenInsert(phoneNumber string, token string, otpCode string) error {
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     os.Getenv("REDIS_ADDRESS"),

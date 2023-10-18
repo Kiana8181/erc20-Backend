@@ -72,13 +72,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	err := cacheService.RegisterCacheCheck(input.PhoneNumber, input.NationalId)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	err = blockchain.Register(input.PhoneNumber, "pas123") //password is hardcoded for now
+	err := blockchain.Register(input.PhoneNumber, "pas123") //password is hardcoded for now ;)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
