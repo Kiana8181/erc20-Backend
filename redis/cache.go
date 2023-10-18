@@ -3,9 +3,7 @@ package cacheService
 import (
 	"context"
 	"crypto/sha256"
-	"errors"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/redis/go-redis/v9"
@@ -48,13 +46,7 @@ func LoginTokenFetch(phoneNumber string, otpCode string) (string, error) {
 	hashKey.Write([]byte(key))
 	hashKeyStr := string(hashKey.Sum(nil))
 
-	raw_TokenCode, _ := rdb.Get(ctx, hashKeyStr).Result()
-	credentials := strings.Split(raw_TokenCode, "/(+)/")
-
-	if credentials[0] != otpCode {
-		return "", errors.New("otp code mismatched")
-	}
-	token := credentials[1]
+	token, _ := rdb.Get(ctx, hashKeyStr).Result()
 
 	return token, nil
 }
