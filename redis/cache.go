@@ -13,29 +13,6 @@ import (
 
 var ctx = context.Background()
 
-func RegisterCacheInsert(phoneNumber string, nationalId string) error {
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     os.Getenv("REDIS_ADDRESS"),
-		Password: "", // no password set
-		DB:       0,  // use default DB
-	})
-
-	input := phoneNumber + "/(+)/" + nationalId
-
-	key := phoneNumber + nationalId
-	hashKey := sha256.New()
-	hashKey.Write([]byte(key))
-	hashKeyStr := string(hashKey.Sum(nil))
-
-	// SET key value EX 10 NX
-	_, err := rdb.SetNX(ctx, hashKeyStr, input, 360*time.Second).Result()
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func RegisterCacheCheck(phoneNumber string, nationalId string) error {
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     os.Getenv("REDIS_ADDRESS"),

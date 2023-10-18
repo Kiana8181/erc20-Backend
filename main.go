@@ -22,9 +22,6 @@ func main() {
 	public.OPTIONS("/migrate", CORSMiddleware())
 	public.GET("/migrate", controllers.Migrate)
 
-	public.OPTIONS("/registercheck", CORSMiddleware())
-	public.POST("/registercheck", controllers.ValidatePhoneAndID)
-
 	public.OPTIONS("/register", CORSMiddleware())
 	public.POST("/register", controllers.Register)
 
@@ -55,10 +52,6 @@ func main() {
 	// should be admin
 	protectedUsers.OPTIONS("/getallproposals", CORSMiddleware())
 	protectedUsers.GET("/getallproposals", controllers.GetAllResidentialProposal)
-
-	// should be admin
-	protectedUsers.OPTIONS("/insertbill", CORSMiddleware())
-	protectedUsers.POST("/insertbill", controllers.GetBill)
 
 	protected := r.Group("/api/admin")
 	protected.Use(middlewares.JWTAuthMiddleware())
