@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: jwt-gin
+      MYSQL_USER: energy
+      MYSQL_PASSWORD: password
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - "energyBackend:/var/lib/mysql"
+    ports:
+      - 3306:3306
+      
+  redis:
+    image: redis:7.0.8
+    restart: always
+    ports:
+      - 6379:6379
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8081:8080
+volumes:
+  energyBackend:
