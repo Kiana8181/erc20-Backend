@@ -26,9 +26,6 @@ func main() {
 	public.OPTIONS("/login", CORSMiddleware())
 	public.POST("/login", controllers.Login)
 
-	// public.OPTIONS("/verifylogin", CORSMiddleware())
-	// public.POST("/verifylogin", controllers.VerifyLogin)
-
 	protectedUsers := r.Group("/api/user", CORSMiddleware())
 	protectedUsers.Use(middlewares.JWTAuthMiddleware())
 

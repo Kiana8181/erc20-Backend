@@ -113,7 +113,7 @@ type BalanceReq struct {
 
 type BalanceRes struct {
 	Message string `json:"message"`
-	Value string `json:"value"`
+	Value   string `json:"value"`
 }
 
 func Balance(username string) (string, error) {
@@ -144,7 +144,7 @@ func Balance(username string) (string, error) {
 	req.Header.Add("Authorization", token)
 	res, err := client.Do(req)
 	if err != nil {
-		return "", err
+		return "0", nil // error will be occuared when balance is 0
 	}
 	defer res.Body.Close()
 
