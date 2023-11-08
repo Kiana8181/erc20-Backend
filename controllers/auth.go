@@ -27,7 +27,7 @@ func CurrentUser(c *gin.Context) {
 }
 
 type RegisterInput struct {
-	Email  string `json:"email" binding:"required"`
+	Email       string `json:"email" binding:"required"`
 	PhoneNumber string `json:"phoneNumber" binding:"required"`
 	Password    string `json:"password" binding:"required"`
 }
@@ -99,13 +99,13 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	err = cacheService.LoginTokenInsert(u.Username, token)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "an error occurred during authentication process."})
-		return
-	}
+	// err = cacheService.LoginTokenInsert(u.Username, token)
+	// if err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "an error occurred during authentication process."})
+	// 	return
+	// }
 
-	c.JSON(http.StatusOK, gin.H{"message": "OK"})
+	c.JSON(http.StatusOK, gin.H{"token": token})
 
 }
 
