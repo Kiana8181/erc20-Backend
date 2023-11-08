@@ -3,7 +3,6 @@ package controllers
 import (
 	"energytoken/blockchain"
 	"energytoken/models"
-	cacheService "energytoken/redis"
 	"energytoken/utils/token"
 	"net/http"
 
@@ -112,21 +111,4 @@ func Login(c *gin.Context) {
 type VerifyInput struct {
 	Username string `json:"phoneNumber" binding:"required"`
 	Code     string `json:"code" binding:"required"`
-}
-
-func VerifyLogin(c *gin.Context) {
-	var input VerifyInput
-
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	token, err := cacheService.LoginTokenFetch(input.Username, input.Code)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"token": token})
 }
