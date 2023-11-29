@@ -36,8 +36,9 @@ func main() {
 	protectedUsers.GET("/balance", controllers.Balance)
 
 	// should be admin
-	protected := r.Group("/api/admin")
+	protected := r.Group("/api/admin", CORSMiddleware())
 	protected.Use(middlewares.JWTAuthMiddleware())
+	protected.OPTIONS("/user", CORSMiddleware())
 	protected.POST("/user", controllers.CurrentUser)
 
 	r.Run(":8080")
