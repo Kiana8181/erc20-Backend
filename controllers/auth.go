@@ -28,6 +28,8 @@ func CurrentUser(c *gin.Context) {
 type RegisterInput struct {
 	Email       string `json:"email" binding:"required"`
 	PhoneNumber string `json:"phoneNumber" binding:"required"`
+	Firstname   string `json:"firstname" binding:"required"`
+	Lastname    string `json:"lastname" binding:"required"`
 	Password    string `json:"password" binding:"required"`
 }
 
@@ -51,6 +53,8 @@ func Register(c *gin.Context) {
 	u.Email = input.Email
 	u.Username = input.PhoneNumber
 	u.Password = input.Password
+	u.Firstname = input.Firstname
+	u.Lastname = input.Lastname
 	u.IsSuper = false
 
 	accountID, err := blockchain.AccountID(input.PhoneNumber)
