@@ -4,8 +4,10 @@ import (
 	"energytoken/blockchain"
 	"energytoken/models"
 	"energytoken/utils/token"
+	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -43,6 +45,14 @@ func Transfer(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 
+	current_time := time.Now()
+	var trxLog models.Transactions
+	trxLog.QQFrom = username
+	trxLog.QQTo = input.Receiver
+	trxLog.Value = input.Value
+	trxLog.Date = fmt.Sprint(current_time.Format("2006-01-02 15:04:05"))
+	trxLog.SaveTransaction()
+	
 	c.JSON(http.StatusOK, gin.H{"message": "ok"})
 }
 

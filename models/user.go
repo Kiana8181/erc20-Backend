@@ -15,25 +15,25 @@ import (
 
 type User struct {
 	gorm.Model
-	Username  string         `gorm:"size:225;not null;unique" json:"username"`
-	Password  string         `gorm:"size:225;not null" json:"password"`
-	WalletID  string         `gorm:"size:255" json:"walletId"`
-	Email     string         `gorm:"size:225" json:"email"`
-	Firstname string         `gorm:"size:225" json:"firstname"`
-	Lastname  string         `gorm:"size:255" json:"lastname"`
-	IsActive  bool           `gorm:"size:255" json:"is_active"`
-	IsSuper   bool           `gorm:"size:255" json:"is_super"`
-	History   []Transactions `gorm:"ForeignKey:ID" json:"mytransactions"`
+	Username  string `gorm:"size:225;not null;unique" json:"username"`
+	Password  string `gorm:"size:225;not null" json:"password"`
+	WalletID  string `gorm:"size:255" json:"walletId"`
+	Email     string `gorm:"size:225" json:"email"`
+	Firstname string `gorm:"size:225" json:"firstname"`
+	Lastname  string `gorm:"size:255" json:"lastname"`
+	IsActive  bool   `gorm:"size:255" json:"is_active"`
+	IsSuper   bool   `gorm:"size:255" json:"is_super"`
+	// History   []Transactions `gorm:"ForeignKey:ID" json:"mytransactions"`
 }
 
 type Transactions struct {
-	// gorm.Model
-	ID    uint
-	Key   uint   `gorm:"primary_key"`
-	From  string `gorm:"size:255" json:"from"`
-	To    string `gorm:"size:255" json:"to"`
-	Date  string `gorm:"size:255" json:"date"`
-	Value string `gorm:"size:255" json:"value"`
+	gorm.Model
+	// ID    uint
+	// Key   uint   `gorm:"primary_key"`
+	QQFrom string `gorm:"size:255" json:"qqfrom"`
+	QQTo   string `gorm:"size:255" json:"qqto"`
+	Date   string `gorm:"size:255" json:"date"`
+	Value  string `gorm:"size:255" json:"value"`
 }
 
 type ResidentialProposal struct {
@@ -58,7 +58,8 @@ func (u *User) PrepareGive() {
 func GetUserByID(uid uint) (User, error) {
 	var u User
 
-	DB.Preload("History").First(&u, uid)
+	DB.First(&u, uid)
+	// DB.Preload("History").First(&u, uid)
 	u.PrepareGive()
 
 	return u, nil
@@ -76,6 +77,39 @@ func GetUsernameByID(uid uint) (string, error) {
 
 func VerifyPassword(password, hashedPassword string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+}
+
+type GetTransactionsResponse struct {
+	From  string `gorm:"size:255" json:"from"`
+	To    string `gorm:"size:255" json:"to"`
+	Date  string `gorm:"size:255" json:"date"`
+	Value string `gorm:"size:255" json:"value"`
+}
+
+func GetTransactions(username string, accountID string) []GetTransactionsResponse {
+	t1 := []Transactions{}
+	t2 := []Transactions{}
+	t3 := []Transactions{}
+
+	DB.Find(&t1, "qq_to = ?", username)
+	DB.Find(&t2, "qq_from = ?", username)
+	DB.Find(&t3, "qq_to = ?", accountID)
+
+	var JsonForm []GetTransactionsResponse
+	var JsonElement GetTransactionsResponse
+
+	t := append(t1, t2...)
+	t = append(t, t3...)
+
+	for i := 0; i < len(t); i++ {
+		JsonElement.Date = t[i].Date
+		JsonElement.From = t[i].QQFrom
+		JsonElement.To = t[i].QQTo
+		JsonElement.Value = t[i].Value
+		JsonForm = append(JsonForm, JsonElement)
+	}
+
+	return JsonForm
 }
 
 func LoginCheck(username string, password string) (string, error) {
@@ -111,13 +145,13 @@ func (u *User) SaveUser() (*User, error) {
 	return u, nil
 }
 
-func (b *Transactions) SaveTransaction(id uint) (*Transactions, error) {
-	b.ID = id
-	var err error = DB.Create(&b).Error
+func (t *Transactions) SaveTransaction() (*Transactions, error) {
+	// b.ID = id
+	var err error = DB.Create(&t).Error
 	if err != nil {
 		return &Transactions{}, err
 	}
-	return b, nil
+	return t, nil
 }
 
 func (u *User) BeforeSave() error {
@@ -135,7 +169,7 @@ func (u *User) BeforeSave() error {
 	return nil
 }
 
-func InsertTransaction(transaction Transactions, user_id uint) {
-	// fmt.Printf("%+v\n", bill)
-	transaction.SaveTransaction(user_id)
-}
+// func InsertTransaction(transaction Transactions, user_id uint) {
+// 	// fmt.Printf("%+v\n", bill)
+// 	transaction.SaveTransaction(user_id)
+// }

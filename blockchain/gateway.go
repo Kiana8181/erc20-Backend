@@ -5,11 +5,15 @@ package blockchain
 import (
 	"bytes"
 	"encoding/json"
+	"energytoken/models"
 	"errors"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -109,6 +113,14 @@ func Mint(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Cannot Mint"})
 		return
 	}
+
+	current_time := time.Now()
+	var trxLog models.Transactions
+	trxLog.QQFrom = "System"
+	trxLog.QQTo = input.Username
+	trxLog.Value = strconv.Itoa(input.Value)
+	trxLog.Date = fmt.Sprint(current_time.Format("2006-01-02 15:04:05"))
+	trxLog.SaveTransaction()
 
 	c.JSON(http.StatusOK, gin.H{"message": "ok"})
 }

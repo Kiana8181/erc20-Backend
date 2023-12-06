@@ -36,6 +36,9 @@ func main() {
 	protectedUsers.OPTIONS("/mint", CORSMiddleware())
 	protectedUsers.POST("/mint", blockchain.Mint)
 
+	protectedUsers.OPTIONS("/gettransactions", CORSMiddleware())
+	protectedUsers.GET("/gettransactions", controllers.GetTransactions)
+
 	protectedUsers.OPTIONS("/balance", CORSMiddleware())
 	protectedUsers.GET("/balance", controllers.Balance)
 
