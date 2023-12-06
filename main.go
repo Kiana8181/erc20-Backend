@@ -1,6 +1,7 @@
 package main
 
 import (
+	"energytoken/blockchain"
 	"energytoken/controllers"
 	"energytoken/middlewares"
 	"energytoken/models"
@@ -31,6 +32,9 @@ func main() {
 
 	protectedUsers.OPTIONS("/transfer", CORSMiddleware())
 	protectedUsers.POST("/transfer", controllers.Transfer)
+
+	protectedUsers.OPTIONS("/mint", CORSMiddleware())
+	protectedUsers.POST("/mint", blockchain.Mint)
 
 	protectedUsers.OPTIONS("/balance", CORSMiddleware())
 	protectedUsers.GET("/balance", controllers.Balance)

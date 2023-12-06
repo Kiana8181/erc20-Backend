@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
@@ -63,8 +64,13 @@ type MintReq struct {
 	Value    int    `json:"value"`
 }
 
-func Mint(username string, value int) error {
-
+func Mint(c *gin.Context) {
+	var input MintReq
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	// username string, value int
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatalf("Error loading .env file")
@@ -73,34 +79,38 @@ func Mint(username string, value int) error {
 	token := os.Getenv("HYPERLEDGER_TOKEN")
 
 	var payload MintReq
-	payload.Username = username
-	payload.Value = value
+	payload.Username = input.Username
+	payload.Value = input.Value
 
 	var buf bytes.Buffer
 	err = json.NewEncoder(&buf).Encode(payload)
 	if err != nil {
-		return err
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	client := &http.Client{}
 	req, err := http.NewRequest(http.MethodPost, url, &buf)
 	if err != nil {
-		return err
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Authorization", token)
 	res, err := client.Do(req)
 	if err != nil {
-		return err
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	defer res.Body.Close()
 
 	if res.StatusCode != 200 {
-		return errors.New("unable to mint")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Cannot Mint"})
+		return
 	}
 
-	return nil
+	c.JSON(http.StatusOK, gin.H{"message": "ok"})
 }
 
 type BalanceInput struct {
