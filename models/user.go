@@ -84,6 +84,7 @@ type GetTransactionsResponse struct {
 	To    string `gorm:"size:255" json:"to"`
 	Date  string `gorm:"size:255" json:"date"`
 	Value string `gorm:"size:255" json:"value"`
+	Type  string `gorm:"size:255" json:"type"`
 }
 
 func GetTransactions(username string, accountID string) []GetTransactionsResponse {
@@ -106,6 +107,17 @@ func GetTransactions(username string, accountID string) []GetTransactionsRespons
 		JsonElement.From = t[i].QQFrom
 		JsonElement.To = t[i].QQTo
 		JsonElement.Value = t[i].Value
+
+		if t[i].QQFrom == "System" {
+			JsonElement.Type = "0"
+		}
+		if t[i].QQFrom == username {
+			JsonElement.Type = "1"
+		}
+		if t[i].QQTo == accountID {
+			JsonElement.Type = "2"
+		}
+
 		JsonForm = append(JsonForm, JsonElement)
 	}
 

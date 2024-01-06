@@ -52,7 +52,7 @@ func Transfer(c *gin.Context) {
 	trxLog.Value = input.Value
 	trxLog.Date = fmt.Sprint(current_time.Format("2006-01-02 15:04:05"))
 	trxLog.SaveTransaction()
-	
+
 	c.JSON(http.StatusOK, gin.H{"message": "ok"})
 }
 
