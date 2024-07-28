@@ -62,7 +62,7 @@ erc20-Backend/
 
 ## System Architecture
 
-![System Architecture](path/to/your/architecture.png)
+![System Architecture](./architecture.png)
 
 The system architecture is composed of the following components:
 
