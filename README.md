@@ -5,7 +5,7 @@ This repository contains the backend and database components of the KWallet proj
 ## Table of Contents
 
 1. [Project Structure](#project-structure)
-   - [Directory Explanation](#Directory Explanation)
+   - [Directory Explanation](#directory-explanation)
 2. [How to Run](#how-to-run)
    - [Prerequisites](#prerequisites)
    - [Setup](#setup)
@@ -109,5 +109,5 @@ The MySQL configuration is specified in the `docker-compose.yml` file.
 The Redis configuration is also specified in the docker-compose.yml file.
 
 ## Related Links
-![Blockchain Repository](https://github.com/Kiana8181/erc20-Blockchain)
-![Frontend Repository](https://github.com/Kiana8181/erc20-Frontend)
+[Blockchain Repository](https://github.com/Kiana8181/erc20-Blockchain)
+[Frontend Repository](https://github.com/Kiana8181/erc20-Frontend)
