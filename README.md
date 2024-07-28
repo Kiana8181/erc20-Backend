@@ -6,15 +6,16 @@ This repository contains the backend and database components of the KWallet proj
 
 1. [Project Structure](#project-structure)
    - [Directory Explanation](#directory-explanation)
-2. [How to Run](#how-to-run)
+2. [System Architecture](#system-architecture)
+3. [How to Run](#how-to-run)
    - [Prerequisites](#prerequisites)
    - [Setup](#setup)
-3. [Mini Explanation of Backend and Database](#mini-explanation-of-backend-and-database)
+4. [Mini Explanation of Backend and Database](#mini-explanation-of-backend-and-database)
    - [Backend](#backend)
    - [Database](#database)
      - [MySQL Configuration](#mysql-configuration)
      - [Redis Configuration](#redis-configuration)
-4. [Related Links](#related-links)
+5. [Related Links](#related-links)
 
 ## Project Structure
 
@@ -58,6 +59,22 @@ erc20-Backend/
 - **middlewares:** Contains middleware functions for request handling.
 - **models:** Contains database models and setup logic.
 - **utils/token:** Contains utility functions for token generation and validation.
+
+## System Architecture
+
+![System Architecture](path/to/your/architecture.png)
+
+The system architecture is composed of the following components:
+
+1. **Frontend:** The user interface built with Vite and React.
+2. **Backend:** The server-side application built with Go. It handles API requests and interacts with the database and blockchain.
+3. **API:** The gateway API that allows the backend to communicate with the blockchain network.
+4. **Orderer:** Part of the Hyperledger Fabric network, responsible for ordering transactions and ensuring the consistency of the blockchain.
+5. **Peer Nodes:** Nodes in the Hyperledger Fabric network that maintain the ledger and execute smart contracts.
+6. **Databases:**
+    - **MySQL:** Stores relational data required by the backend.
+    - **Redis:** Serves as a cache to improve performance.
+    - **CouchDB:** Used by the Hyperledger Fabric peer nodes to store the blockchain state.
 
 
 ## How to Run
